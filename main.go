@@ -83,17 +83,17 @@ func main() {
 		c.String(fasthttp.StatusOK, x)
 	})
 
-	r.GET("/re1/{id:\\d+}", func(c *fgee.Context) {
+	r.GET("/re1/#id:\\d+", func(c *fgee.Context) {
 		id:= c.Param("id")
 		c.String(fasthttp.StatusOK, "re1 id: %s", id)
 	})
 
-	r.GET("/re2/{id:[a-z]+}", func(c *fgee.Context) {
+	r.GET("/re2/#id:[a-z]+", func(c *fgee.Context) {
 		id:= c.Param("id")
 		c.String(fasthttp.StatusOK, "re2 id: %s", id)
 	})
 
-	r.GET("/re3/{year:[12][0-9]{3}}/{month:[1-9]{2}}/{day:[1-9]{2}}/{hour:(12|[3-9])}", func(c *fgee.Context) {
+	r.GET("/re3/#year:[12][0-9]{3}/#month:[1-9]{2}/#day:[1-9]{2}/#hour:(12|[3-9])", func(c *fgee.Context) {
 		year := c.Param("year")
 		month := c.Param("month")
 		day := c.Param("day")
@@ -101,7 +101,7 @@ func main() {
 		c.String(fasthttp.StatusOK, "re3 year: %s, month: %s, day: %s, hour: %s", year, month, day, hour)
 	})
 
-	r.GET("/re2/{id:[a-z]+}/test", func(c *fgee.Context) {
+	r.GET("/re2/#id:[a-z]+/test", func(c *fgee.Context) {
 		id:= c.Param("id")
 		c.String(fasthttp.StatusOK, "re2 id: %s test", id)
 	})
