@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"html/template"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"time"
@@ -83,17 +82,17 @@ func main() {
 		c.String(fasthttp.StatusOK, x)
 	})
 
-	r.GET("/re1/#id:\\d+", func(c *fgee.Context) {
+	r.GET("/re1/{id:\\d+}", func(c *fgee.Context) {
 		id:= c.Param("id")
 		c.String(fasthttp.StatusOK, "re1 id: %s", id)
 	})
 
-	r.GET("/re2/#id:[a-z]+", func(c *fgee.Context) {
+	r.GET("/re2/{id:[a-z]+}", func(c *fgee.Context) {
 		id:= c.Param("id")
 		c.String(fasthttp.StatusOK, "re2 id: %s", id)
 	})
 
-	r.GET("/re3/#year:[12][0-9]{3}/#month:[1-9]{2}/#day:[1-9]{2}/#hour:(12|[3-9])", func(c *fgee.Context) {
+	r.GET("/re3/{year:[12][0-9]{3}}/{month:[1-9]{2}}/{day:[1-9]{2}}/{hour:(12|[3-9])}", func(c *fgee.Context) {
 		year := c.Param("year")
 		month := c.Param("month")
 		day := c.Param("day")
@@ -101,7 +100,7 @@ func main() {
 		c.String(fasthttp.StatusOK, "re3 year: %s, month: %s, day: %s, hour: %s", year, month, day, hour)
 	})
 
-	r.GET("/re2/#id:[a-z]+/test", func(c *fgee.Context) {
+	r.GET("/re2/{id:[a-z]+}/test", func(c *fgee.Context) {
 		id:= c.Param("id")
 		c.String(fasthttp.StatusOK, "re2 id: %s test", id)
 	})
@@ -121,14 +120,14 @@ func main() {
 	stu2 := &student{Name: "Jack", Age: 22}
 
 	r.GET("/students", func(c *fgee.Context) {
-		c.HTML(http.StatusOK, "arr.tmpl", fgee.H{
+		c.HTML(fasthttp.StatusOK, "arr.tmpl", fgee.H{
 			"title":  "gee",
 			"stuArr": [2]*student{stu1, stu2},
 		})
 	})
 
 	r.GET("/date", func(c *fgee.Context) {
-		c.HTML(http.StatusOK, "custom_func.tmpl", fgee.H{
+		c.HTML(fasthttp.StatusOK, "custom_func.tmpl", fgee.H{
 			"title": "gee",
 			"now":   time.Date(2019, 8, 17, 0, 0, 0, 0, time.UTC),
 		})
@@ -136,7 +135,10 @@ func main() {
 
 	go func() {
 		log.Println("Server Start @", listen)
-		if err := r.Run(":9999"); err != nil {
+		//if err := r.Run(":9999"); err != nil {
+		//	log.Fatalf("Server Start Error: %s\n", err)
+		//}
+		if err := r.RunTLS(":9999", "./server.crt", "./server.key"); err != nil {
 			log.Fatalf("Server Start Error: %s\n", err)
 		}
 	}()

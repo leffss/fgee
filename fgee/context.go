@@ -81,6 +81,11 @@ func (c *Context) SetHeader(key string, value string) {
 	c.Ctx.Response.Header.Set(key, value)
 }
 
+func (c *Context) GetHeader(key string) string {
+	header := c.Ctx.Request.Header.Peek(key)
+	return string(header)
+}
+
 func (c *Context) String(code int, format string, values ...interface{}) {
 	c.Status(code)
 	c.Ctx.SetContentType("text/plain")

@@ -189,6 +189,16 @@ func (engine *Engine) Run(addr string) (err error) {
 	return server.ListenAndServe(addr)
 }
 
+func (engine *Engine) RunTLS(addr, ca, key string) (err error) {
+	server := &fasthttp.Server{
+		Handler: engine.ServeHTTP,
+		ReadTimeout: ReadTimeout,
+		WriteTimeout: WriteTimeout,
+	}
+	engine.server = server
+	return server.ListenAndServeTLS(addr, ca, key)
+}
+
 func (engine *Engine) Shutdown() (err error) {
 	return engine.server.Shutdown()
 }
