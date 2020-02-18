@@ -1,4 +1,4 @@
-module fgee
+module github.com/leffss/fgee
 
 go 1.13
 

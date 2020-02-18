@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"time"
 
-	"fgee/fgee"
+	"github.com/leffss/fgee"
 	"github.com/valyala/fasthttp"
 )
 
